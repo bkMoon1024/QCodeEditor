@@ -27,7 +27,7 @@ must not use a resource file with the same name.
 It's a CMake-based library, so it can be used as a submodule (see the example).
 But here are the steps to build it as a static library (for external use for example).
 
-1. Clone the repository: `git clone https://github.com/bkMoon1024/QCodeEditor`
+1. Clone the repository: `git clone https://gitee.com/h1239922542/QCodeEditor`
 1. Go into the repository: `cd QCodeEditor`
 1. Create a build folder: `mkdir build`
 1. Go into the build folder: `cd build`
@@ -41,7 +41,7 @@ By default, `QCodeEditor` uses the standard QtCreator theme. But you may specify
 your own by parsing it with `QSyntaxStyle`. The example uses [Dracula](https://draculatheme.com) theme.
 (See the example for more.) 
 
-<img src="https://github.com/bkMoon1024/QCodeEditor/blob/master/example/image/preview.png">
+<img src="https://gitee.com/h1239922542/QCodeEditor/blob/master/example/image/preview.png">
 
 ## LICENSE
 

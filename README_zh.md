@@ -26,7 +26,7 @@
 这是一个基于 CMake 的库，可以作为子模块使用（参见示例）。
 以下是将其构建为静态库的步骤（例如用于外部使用）：
 
-1. 克隆仓库：`git clone https://github.com/bkMoon1024/QCodeEditor`
+1. 克隆仓库：`git clone https://gitee.com/h1239922542/QCodeEditor`
 1. 进入仓库：`cd QCodeEditor`
 1. 创建构建文件夹：`mkdir build`
 1. 进入构建文件夹：`cd build`
@@ -39,7 +39,7 @@
 默认情况下，`QCodeEditor` 使用标准的 QtCreator 主题。但你可以通过 `QSyntaxStyle` 解析来指定自己的主题。示例使用了 [Dracula](https://draculatheme.com) 主题。
 （更多内容请参见示例。）
 
-<img src="https://github.com/bkMoon1024/QCodeEditor/blob/master/example/image/preview.png">
+<img src="https://gitee.com/h1239922542/QCodeEditor/blob/master/example/image/preview.png">
 
 ## 许可证
 
