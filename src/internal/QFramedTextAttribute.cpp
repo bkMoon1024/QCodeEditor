@@ -5,7 +5,6 @@
 // Qt
 #include <QFontMetrics>
 #include <QPainter>
-#include <QDebug>
 #include <QTextBlock>
 
 int QFramedTextAttribute::type()

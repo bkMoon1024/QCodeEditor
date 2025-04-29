@@ -3,6 +3,16 @@ project(QCodeEditor)
 
 set(CMAKE_CXX_STANDARD 11)
 
+# 添加MSVC静态运行时库设置
+if(MSVC)
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  foreach(flag_var CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
+    if(${flag_var} MATCHES "/MD")
+      string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
+    endif()
+  endforeach()
+endif()
+
 option(BUILD_EXAMPLE "Example building required" Off)
 
 if (${BUILD_EXAMPLE})
@@ -22,6 +32,7 @@ set(INCLUDE_FILES
     include/QLineNumberArea
     include/QStyleSyntaxHighlighter
     include/QSyntaxStyle
+    include/QSymbolExtracter
     include/QGLSLCompleter
     include/QGLSLHighlighter
     include/QLanguage
@@ -30,6 +41,7 @@ set(INCLUDE_FILES
     include/QLuaCompleter
     include/QLuaHighlighter
     include/QPythonHighlighter
+    include/QPythonExtracter
     include/QFramedTextAttribute
     include/internal/QHighlightRule.hpp
     include/internal/QHighlightBlockRule.hpp
@@ -38,6 +50,7 @@ set(INCLUDE_FILES
     include/internal/QLineNumberArea.hpp
     include/internal/QStyleSyntaxHighlighter.hpp
     include/internal/QSyntaxStyle.hpp
+    include/internal/QSymbolExtracter.hpp
     include/internal/QGLSLCompleter.hpp
     include/internal/QGLSLHighlighter.hpp
     include/internal/QLanguage.hpp
@@ -47,6 +60,7 @@ set(INCLUDE_FILES
     include/internal/QLuaHighlighter.hpp
     include/internal/QPythonCompleter.hpp
     include/internal/QPythonHighlighter.hpp
+    include/internal/QPythonExtracter.hpp
     include/internal/QFramedTextAttribute.hpp
 )
 
@@ -65,6 +79,7 @@ set(SOURCE_FILES
     src/internal/QLuaHighlighter.cpp
     src/internal/QPythonCompleter.cpp
     src/internal/QPythonHighlighter.cpp
+    src/internal/QPythonExtracter.cpp
     src/internal/QFramedTextAttribute.cpp
 )
 
@@ -84,6 +99,11 @@ add_library(QCodeEditor STATIC
     ${SOURCE_FILES}
     ${INCLUDE_FILES}
 )
+
+# 为QCodeEditor目标设置MSVC_RUNTIME_LIBRARY属性
+if(MSVC)
+    set_property(TARGET QCodeEditor PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
 
 target_include_directories(QCodeEditor PUBLIC
     include

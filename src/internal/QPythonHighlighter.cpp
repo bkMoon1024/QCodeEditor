@@ -5,7 +5,6 @@
 
 // Qt
 #include <QFile>
-#include <QDebug>
 
 QPythonHighlighter::QPythonHighlighter(QTextDocument* document) :
     QStyleSyntaxHighlighter(document),

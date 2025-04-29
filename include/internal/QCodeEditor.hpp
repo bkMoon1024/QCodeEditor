@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Qt
 #include <QTextEdit> // Required for inheritance
@@ -8,6 +8,7 @@ class QLineNumberArea;
 class QSyntaxStyle;
 class QStyleSyntaxHighlighter;
 class QFramedTextAttribute;
+class QSymbolExtracter;
 
 /**
  * @brief Class, that describes code editor.
@@ -105,6 +106,30 @@ public:
      * @return Pointer to completer.
      */
     QCompleter* completer() const;
+    
+    /**
+     * @brief 设置符号提取器
+     * @param extracter 指向符号提取器的指针
+     */
+    void setSymbolExtracter(QSymbolExtracter* extracter);
+    
+    /**
+     * @brief 获取符号提取器
+     * @return 指向符号提取器的指针
+     */
+    QSymbolExtracter* symbolExtracter() const;
+
+    /**
+     * @brief 设置符号链接跳转功能的启用状态
+     * @param enabled 是否启用
+     */
+    void setSymbolLinkEnabled(bool enabled);
+
+    /**
+     * @brief A获取符号链接跳转功能的启用状态
+     * @return 是否启用
+     */
+    bool symbolLinkEnabled() const;
 
 public Q_SLOTS:
 
@@ -145,6 +170,11 @@ public Q_SLOTS:
      * change.
      */
     void onSelectionChanged();
+    
+    /**
+     * @brief 更新符号列表和符号位置信息
+     */
+    void updateSymbols();
 
 protected:
     /**
@@ -184,6 +214,24 @@ protected:
      * completer.
      */
     void focusInEvent(QFocusEvent *e) override;
+
+    /**
+     * @brief 鼠标移动事件处理
+     * @param e 鼠标事件
+     */
+    void mouseMoveEvent(QMouseEvent* e) override;
+
+    /**
+     * @brief 鼠标点击事件处理
+     * @param e 鼠标事件
+     */
+    void mousePressEvent(QMouseEvent* e) override;
+
+    /**
+     * @brief 键盘按键释放事件处理
+     * @param e 键盘事件
+     */
+    void keyReleaseEvent(QKeyEvent* e) override;
 
 private:
 
@@ -240,6 +288,26 @@ private:
     QString wordUnderCursor() const;
 
     /**
+     * @brief 获取鼠标位置下的单词
+     * @param pos 鼠标位置
+     * @return 单词文本
+     */
+    QString wordUnderMouse(const QPoint& pos) const;
+
+    /**
+     * @brief 更新符号链接光标
+     * @param pos 鼠标位置
+     */
+    void updateSymbolLinkCursor(const QPoint& pos);
+
+    /**
+     * @brief 获取鼠标位置下的符号信息
+     * @param pos 鼠标位置
+     * @return 是否找到符号
+     */
+    bool getSymbolInfoUnderMouse(const QPoint& pos);
+
+    /**
      * @brief Method, that adds highlighting of
      * currently selected line to extra selection list.
      */
@@ -252,22 +320,36 @@ private:
     void highlightParenthesis(QList<QTextEdit::ExtraSelection>& extraSelection);
 
     /**
+     * @brief 高亮当前鼠标下方的符号链接
+     * @param extraSelection 额外选择列表
+     */
+    void highlightSymbolLink(QList<QTextEdit::ExtraSelection>& extraSelection);
+
+    /**
      * @brief Method for getting number of indentation
      * spaces in current line. Tabs will be treated
      * as `tabWidth / spaceWidth`
      */
     int getIndentationSpaces();
 
-    QStyleSyntaxHighlighter* m_highlighter;
-    QSyntaxStyle* m_syntaxStyle;
-    QLineNumberArea* m_lineNumberArea;
-    QCompleter* m_completer;
+    QStyleSyntaxHighlighter* m_highlighter; // 高亮器
+    QSyntaxStyle* m_syntaxStyle; // 语法样式
+    QLineNumberArea* m_lineNumberArea; // 行号区域
+    QCompleter* m_completer; // 补全器
 
-    QFramedTextAttribute* m_framedAttribute;
+    QFramedTextAttribute* m_framedAttribute; // 框架文本属性
 
-    bool m_autoIndentation;
-    bool m_autoParentheses;
-    bool m_replaceTab;
-    QString m_tabReplace;
+    bool m_autoIndentation; // 自动缩进
+    bool m_autoParentheses; // 自动括号
+    bool m_replaceTab; // 替换Tab
+    QString m_tabReplace; // 替换Tab的字符串
+
+    QSymbolExtracter* m_symbolExtracter; // 符号提取器
+    bool m_symbolExtractionEnabled; // 是否启用符号提取
+    
+    bool m_symbolLinkEnabled; // 是否启用符号链接
+    bool m_ctrlPressed; // Ctrl键是否被按下
+    QTextCursor m_symbolLinkCursor; // 符号链接的光标
+    bool m_symbolLinkValid; // 符号链接是否有效
 };
 
